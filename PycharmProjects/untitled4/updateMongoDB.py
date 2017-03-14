@@ -1,17 +1,23 @@
-import time
+import json
+
 from pymongo import MongoClient
-# client = MongoClient("mongodb://Bobbys-MacBook-Pro.local:27000")
-# db = client.admin
-# coll = db.locations
-# coll.find_one_and_update({'id': 'car1'}, {'$set': {'x': '200'}})
+import socket
+import struct
 
-
-
-client = MongoClient("mongodb://192.168.128.210:27017/db")
-db = client.admin
-coll = db.locations
-x = True
 # coll.drop()
-while x:
-    coll.find_one_and_update({'id': 'car4'}, {'$inc': {'x': .5}})
-    time.sleep(1)
+
+client = MongoClient("mongodb://127.0.0.1:3001")
+db = client.meteor
+coll = db.locations
+
+TCP_IP = '192.168.128.45'
+TCP_PORT = 4444
+BUFFER_SIZE = 1024
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((TCP_IP, TCP_PORT))
+
+while True:
+    data = s.recv(BUFFER_SIZE)
+    id, x, y = struct.unpack('!idd', data)
+    print id, x, y
+    coll.find_one_and_update({'id': id}, {'$set': {'x': x, 'y': y}})
