@@ -12,7 +12,7 @@ coll = db.locations
 
 # coll.drop()
 # os.sys.exit()
-TCP_IP = '192.168.128.45'
+TCP_IP = '192.168.130.21'
 TCP_PORT = 4444
 BUFFER_SIZE = 1024
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
